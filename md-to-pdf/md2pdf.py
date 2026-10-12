@@ -56,8 +56,9 @@ def main() -> int:
     if not pathlib.Path(CHROME).exists():
         print(f"Google Chrome not found at {CHROME}", file=sys.stderr)
         return 2
-    output = args.output or args.source.with_suffix(".pdf")
-    build(args.source, output)
+    # Chrome resolves a relative --print-to-pdf path against its own working folder, not ours, and writes nothing.
+    output = (args.output or args.source.with_suffix(".pdf")).resolve()
+    build(args.source.resolve(), output)
     print(f"{output} ({output.stat().st_size} bytes)")
     for path in preview(output, args.preview) if args.preview else []:
         print(path)
