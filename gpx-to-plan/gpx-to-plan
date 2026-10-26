@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Turn GPX tracks plus a list of stops into easy-pacer plan JSON, and optionally
+rewrite src/Storage/Seeded.elm. Usage: gpx-to-plan <routes.json> [--elm <Seeded.elm>]
+
+routes.json is a list of routes:
+  {"file": "/path/to/track.gpx",
+   "label": "dropdown label", "name": "file name base for the saved plan",
+   "start": "start line name", "finish": "finish line name",
+   "elm": "elmFunctionName",
+   "stations": [{"lat": 10.51, "lon": 107.12, "near_km": 2.3, "name": "Quán ..."}]}
+
+near_km says which pass of the track the stop belongs to when the track goes
+past it more than once; the stop is snapped to the closest track segment within
+0.5 km of that mark.
+"""
+import json, math, re, sys
+
+MAX_POINTS = 3000   # same as Core.App.Route.maxPoints, so the km match what the app computes
+R = 6371000.0
+
+def haversine(a, b):
+    la1, lo1 = map(math.radians, a); la2, lo2 = map(math.radians, b)
+    h = math.sin((la2-la1)/2)**2 + math.cos(la1)*math.cos(la2)*math.sin((lo2-lo1)/2)**2
+    return 2*R*math.asin(math.sqrt(h))
+
+def parse(path):
+    text = open(path, encoding='utf-8').read()
+    pts = []
+    for m in re.finditer(r'<(?:trkpt|rtept) lat="([^"]+)" lon="([^"]+)"[^>]*>(.*?)</(?:trkpt|rtept)>', text, re.S):
+        ele = re.search(r'<ele>([^<]+)</ele>', m.group(3))
+        pts.append((float(m.group(1)), float(m.group(2)), float(ele.group(1)) if ele else 0.0))
+    return pts
+
+def thin(samples):
+    n = len(samples)
+    if n <= MAX_POINTS: return samples
+    stride = n // MAX_POINTS + 1
+    return [s for i, s in enumerate(samples) if i % stride == 0] + samples[-1:]
+
+def cumulative(pts):
+    d = [0.0]
+    for i in range(1, len(pts)): d.append(d[-1] + haversine(pts[i-1][:2], pts[i][:2]))
+    return d
+
+def snap(pts, d, p, near_km):
+    kx = 111320 * math.cos(math.radians(p[0])); ky = 110540
+    def xy(q): return ((q[1]-p[1])*kx, (q[0]-p[0])*ky)
+    best = None
+    for i in range(len(pts)-1):
+        ax, ay = xy(pts[i]); bx, by = xy(pts[i+1])
+        dx, dy = bx-ax, by-ay; l2 = dx*dx + dy*dy
+        t = 0 if l2 == 0 else max(0, min(1, -(ax*dx+ay*dy)/l2))
+        km = (d[i] + t*(d[i+1]-d[i]))/1000
+        if abs(km - near_km) > 0.5: continue
+        dist = math.hypot(ax+t*dx, ay+t*dy)
+        if best is None or dist < best[0]: best = (dist, km)
+    if best is None: sys.exit(f"stop {p} is nowhere near km {near_km}")
+    return round(best[1], 2), best[0]
+
+def build(route):
+    pts = [(round(a, 6), round(b, 6), round(c, 1)) for a, b, c in thin(parse(route['file']))]
+    d = cumulative(pts); total = d[-1]/1000
+    print(f"== {route['label']}: {len(pts)} points, {total:.2f} km")
+    cps = [{"id": "0", "name": route['start'], "km": 0, "cutoff": None, "target": None, "role": "start"}]
+    waypoints = []
+    for i, s in enumerate(route['stations'], start=1):
+        km, off = snap(pts, d, (s['lat'], s['lon']), s['near_km'])
+        print(f"   km {km:6.2f}  ({off:3.0f} m off the track)  {s['name']}")
+        waypoints.append({"name": s['name'], "lat": s['lat'], "lon": s['lon']})
+        cps.append({"id": str(i), "name": s['name'], "km": km, "cutoff": s.get('cutoff'), "target": None, "role": "station"})
+    cps.append({"id": str(len(cps)), "name": route['finish'], "km": round(total, 3), "cutoff": route.get('cutoff'), "target": None, "role": "finish"})
+    if any(cps[i]['km'] >= cps[i+1]['km'] for i in range(len(cps)-1)): sys.exit("stations are not in km order")
+    plan = {"version": 1, "name": route['name'],
+            "route": {"samples": [{"lat": a, "lon": b, "ele": c} for a, b, c in pts], "waypoints": waypoints},
+            "checkpoints": cps, "date": route.get('date'), "time": route.get('time')}
+    return json.dumps(plan, ensure_ascii=False, separators=(',', ':'))
+
+def write_elm(path, routes, jsons):
+    text = open(path, encoding='utf-8').read()
+    head = text[:text.index('plans : List')]
+    body = 'plans : List { label : String, json : String }\nplans =\n    [ '
+    body += '\n    , '.join(f'{{ label = "{r["label"]}", json = {r["elm"]} }}' for r in routes) + '\n    ]\n'
+    for r, js in zip(routes, jsons):
+        if '"""' in js or '\\' in js: sys.exit("plan JSON would break the Elm string literal")
+        body += f'\n\n{r["elm"]} : String\n{r["elm"]} =\n    """{js}"""\n'
+    open(path, 'w', encoding='utf-8').write(head + body)
+    print(f"wrote {path}")
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args or args[0] in ('-h', '--help'): sys.exit(__doc__)
+    routes = json.load(open(args[0], encoding='utf-8'))
+    jsons = [build(r) for r in routes]
+    if '--elm' in args:
+        write_elm(args[args.index('--elm')+1], routes, jsons)
+    else:
+        json.dump([{"label": r['label'], "json": j} for r, j in zip(routes, jsons)], sys.stdout, ensure_ascii=False)

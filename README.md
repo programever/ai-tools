@@ -8,6 +8,7 @@ Small tools Beta built for Iker. One folder per tool. Each folder has:
 | Tool | What it does |
 |---|---|
 | `md-to-pdf` | Markdown file → A4 PDF with tables, using Chrome headless |
+| `gpx-to-plan` | GPX tracks + a list of stops → easy-pacer bundled route plans (`Seeded.elm`) |
 
 ## Setup on a new Mac
 

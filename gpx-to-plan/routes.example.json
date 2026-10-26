@@ -1,0 +1,154 @@
+[
+ {
+  "file": "/Users/iker/Library/CloudStorage/Dropbox/Me/Run/GPX/Dinh/HBS - Ma Kieu - Co Huong - La Ban.gpx",
+  "label": "HBS - Má Kiều - Cô Hường - La Bàn (9.4 km)",
+  "name": "HBS - Ma Kieu - Co Huong - La Ban",
+  "start": "Xuất phát - Hồ Bên Suối (có quán nước)",
+  "finish": "Về đích - Đỉnh La Bàn",
+  "elm": "maKieuCoHuongLaBan",
+  "stations": [
+   {
+    "lat": 10.5101467,
+    "lon": 107.1295374,
+    "near_km": 2.3,
+    "name": "Quán cô Kiều - nước, sữa chua, cháo gà"
+   },
+   {
+    "lat": 10.516161,
+    "lon": 107.135974,
+    "near_km": 3.4,
+    "name": "Chân dốc Nấm - nghỉ trước dốc dài, không có quán"
+   },
+   {
+    "lat": 10.5382362,
+    "lon": 107.1406342,
+    "near_km": 6.4,
+    "name": "Quán cô Hường - nước, cháo gà"
+   }
+  ]
+ },
+ {
+  "file": "/Users/iker/Library/CloudStorage/Dropbox/Me/Run/GPX/Dinh/HBS - Ong Nuoc - La Ban.gpx",
+  "label": "HBS - Di Đà Sơn - Ống Nước - La Bàn (5.2 km)",
+  "name": "HBS - Di Da Son - Ong Nuoc - La Ban",
+  "start": "Xuất phát - Hồ Bên Suối (có quán nước)",
+  "finish": "Về đích - Đỉnh La Bàn",
+  "elm": "diDaSonOngNuocLaBan",
+  "stations": [
+   {
+    "lat": 10.516188,
+    "lon": 107.124759,
+    "near_km": 1.35,
+    "name": "Chùa Di Đà Sơn - nghỉ chân"
+   },
+   {
+    "lat": 10.5256286,
+    "lon": 107.1305451,
+    "near_km": 2.75,
+    "name": "Quán Tư Vui - Suối Tiên - nước"
+   },
+   {
+    "lat": 10.527499,
+    "lon": 107.134476,
+    "near_km": 3.7,
+    "name": "Ngã 3 ống nước - nghỉ, không có quán"
+   }
+  ]
+ },
+ {
+  "file": "/Users/iker/Library/CloudStorage/Dropbox/Me/Run/GPX/Dinh/HBS - Suoi Da Nam - La Ban.gpx",
+  "label": "HBS - Suối Đá 5 hồ - La Bàn (4.3 km)",
+  "name": "HBS - Suoi Da 5 Ho - La Ban",
+  "start": "Xuất phát - Hồ Bên Suối (có quán nước)",
+  "finish": "Về đích - Đỉnh La Bàn",
+  "elm": "suoiDa5HoLaBan",
+  "stations": [
+   {
+    "lat": 10.5183854,
+    "lon": 107.1202451,
+    "near_km": 1.0,
+    "name": "Suối Đá - Hồ 5 - nghỉ bên suối"
+   },
+   {
+    "lat": 10.530029,
+    "lon": 107.124445,
+    "near_km": 2.5,
+    "name": "Chùa Kim Cang - nghỉ chân"
+   }
+  ]
+ },
+ {
+  "file": "/Users/iker/Library/CloudStorage/Dropbox/Me/Run/GPX/Dinh/HBS - Thien Vien - La Ban.gpx",
+  "label": "HBS - Thiền Viện - La Bàn (5.6 km)",
+  "name": "HBS - Thien Vien - La Ban",
+  "start": "Xuất phát - Hồ Bên Suối (có quán nước)",
+  "finish": "Về đích - Đỉnh La Bàn",
+  "elm": "thienVienLaBan",
+  "stations": [
+   {
+    "lat": 10.528875,
+    "lon": 107.113025,
+    "near_km": 2.4,
+    "name": "Thiền viện Minh Đức - nghỉ chân"
+   },
+   {
+    "lat": 10.538147,
+    "lon": 107.126093,
+    "near_km": 4.7,
+    "name": "Chùa Hang Mai - nghỉ chân"
+   }
+  ]
+ },
+ {
+  "file": "/Users/iker/Library/CloudStorage/Dropbox/Me/Run/GPX/Dinh/Là Mía cung Cam 20 km 1300m gain 20260905071208.gpx",
+  "label": "Là Mía - cung Cam (20 km)",
+  "name": "La Mia - cung Cam 20 km",
+  "start": "Xuất phát - Là Mía (có quán ăn, nước)",
+  "finish": "Về đích - Là Mía (có quán ăn, nước)",
+  "elm": "laMiaCungCam",
+  "stations": [
+   {
+    "lat": 10.516188,
+    "lon": 107.124759,
+    "near_km": 2.0,
+    "name": "Chùa Di Đà Sơn - nghỉ chân"
+   },
+   {
+    "lat": 10.5256286,
+    "lon": 107.1305451,
+    "near_km": 3.35,
+    "name": "Quán Tư Vui - Suối Tiên - nước"
+   },
+   {
+    "lat": 10.516704,
+    "lon": 107.140404,
+    "near_km": 5.5,
+    "name": "Chùa Như Lâm - nghỉ chân"
+   },
+   {
+    "lat": 10.543764,
+    "lon": 107.153946,
+    "near_km": 12.2,
+    "name": "Đỉnh Sân Bay - nghỉ trên đỉnh, không có quán"
+   },
+   {
+    "lat": 10.5382362,
+    "lon": 107.1406342,
+    "near_km": 14.5,
+    "name": "Quán cô Hường - nước, cháo gà"
+   },
+   {
+    "lat": 10.527499,
+    "lon": 107.134476,
+    "near_km": 15.95,
+    "name": "Ngã 3 ống nước - nghỉ, không có quán"
+   },
+   {
+    "lat": 10.5150062,
+    "lon": 107.1182461,
+    "near_km": 19.9,
+    "name": "Hồ Bên Suối - quán nước"
+   }
+  ]
+ }
+]
