@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+HERE="$(cd "$(dirname "$0")" && pwd)"
+SRC="$HERE/photo-to-pdf.swift"
+BIN="$HERE/.build/photo-to-pdf"
+if [ ! -x "$BIN" ] || [ "$SRC" -nt "$BIN" ]; then
+  mkdir -p "$HERE/.build"
+  swiftc -O -o "$BIN" "$SRC"
+fi
+exec "$BIN" "$@"
